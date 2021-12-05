@@ -298,5 +298,5 @@ def update_charts(moneda, intervalo, start_date, end_date):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True,port=8080)
 
