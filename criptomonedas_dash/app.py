@@ -1,18 +1,14 @@
 import requests
 import json
 import plotly.graph_objects as go
-import plotly.express as px
-import matplotlib.pyplot as plt
 import dash
 from dash import  dcc
 from dash import  html
-
 import pandas as pd
 import numpy as np
 import datetime
 from dash.dependencies import Output, Input
 import validators
-from flask import send_from_directory
 
 
 #Como primer paso validamos si nuestra API se encuentra operativa
@@ -32,7 +28,7 @@ data_cripto_2=pd.DataFrame()
 
 #Vamos a crear una funcion por criptomoneda, y se captura por Split
 def fetch_OHLC_data(symbol, timeframe):
-    """This function will get Open/High/Low/Close, Volume and tradecount data for the pair passed and save to CSV"""
+
     pair_split = symbol.split('/')  #utilizamos el simbolo "/" para seprar las monedas a analizar
     symbol = pair_split[0] + pair_split[1]
 
@@ -62,7 +58,7 @@ def fetch_OHLC_data(symbol, timeframe):
 
         #Si hay un problema en obtener los datos lo pintamos, caso contrario lo guardamos en un file como backup
         if data is None:
-            print("Did not return any data from Kraken for this symbol")
+            print("Para está moneda no hay data que exportar desde el API Kraken, revisar Symbol")
         else:
             if timeframe == '1':
                 tf = 'minute'
@@ -75,7 +71,7 @@ def fetch_OHLC_data(symbol, timeframe):
             data.to_csv(f'Kraken_{symbol}_{tf}.csv', index=False)
 
     else:
-        print("Did not receieve OK response from Kraken API")
+        print("No hay respuesta del servidor, revisar API Kraken")
 
     return data_proyecto
 
@@ -109,7 +105,7 @@ def fetch_OHLC_data_2(symbol, timeframe):
 
         #Si hay un problema en obtener los datos lo pintamos, caso contrario lo guardamos en un file como backup
         if data is None:
-            print("Did not return any data from Kraken for this symbol")
+            print("Para está moneda no hay data que exportar desde el API Kraken, revisar Symbol")
         else:
             if timeframe == '1':
                 tf = 'minute'
@@ -122,7 +118,7 @@ def fetch_OHLC_data_2(symbol, timeframe):
             data.to_csv(f'Kraken_{symbol}_{tf}.csv', index=False)
 
     else:
-        print("Did not receieve OK response from Kraken API")
+        print("No hay respuesta del servidor, revisar API Kraken")
 
     return data
 
@@ -149,9 +145,9 @@ app.layout = html.Div(
                     children="Analisis de Criptomonedas", className="header-title"
                 ),
                 html.P(
-                    children="Analizar el comportamiento del precio(EUR) de la criptomoneda"
+                    children="Analizar las cotizaciones del mercado de criptomonedas"
                     " y la variación de VWAP"
-                    " entre las últimas 3 horas de ejecución con el API  de Kraken",
+                    " en un intervalo de tiempo a través de API Kraken",
                     className="header-description",
                 ),
             ],
